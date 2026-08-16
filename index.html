@@ -33,6 +33,7 @@
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
     }
 
     button { border: none; background: none; cursor: pointer; font-family: inherit; }
@@ -144,7 +145,7 @@
     }
     .search-bar:focus { border-color: var(--accent); }
     
-    .category-pill-container { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    .category-pill-container { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem; }
     .category-pill-container::-webkit-scrollbar { display: none; }
     .category-pill {
       padding: 0.5rem 1.25rem; border-radius: 999px; font-size: 0.875rem; font-weight: 600;
@@ -153,10 +154,102 @@
     .category-pill.active { background: var(--accent); color: white; border-color: var(--accent); }
     .category-pill:not(.active):hover { border-color: var(--muted); }
 
+    .segment-control {
+      display: inline-flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+      width: max-content;
+    }
+    .segment-btn {
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: var(--transition);
+    }
+    .segment-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+    }
+    .segment-btn:not(.active):hover { color: var(--text); }
+
     .product-page { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; padding: 2rem 0; }
-    .product-gallery { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
-    .product-gallery img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
-    .product-details h1 { font-size: 2rem; font-weight: 800; margin: 0.5rem 0 1rem; line-height: 1.2; }
+    
+    .gallery-wrapper { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding-bottom: 1rem; }
+    .carousel-container { 
+      position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: var(--radius) var(--radius) 0 0;
+      touch-action: pan-y;
+    }
+    
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .carousel-slide {
+      min-width: 100%;
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+    }
+    .carousel-image, .carousel-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
+    }
+    .carousel-video {
+      background: #000;
+    }
+
+    .carousel-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9); border: none; width: 40px; height: 40px;
+      border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: var(--shadow-md); transition: var(--transition); z-index: 2; color: var(--text);
+    }
+    .carousel-arrow:hover { background: white; transform: translateY(-50%) scale(1.05); }
+    .carousel-arrow.left { left: 16px; }
+    .carousel-arrow.right { right: 16px; }
+    .image-counter { text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--text); margin-top: 1rem; letter-spacing: 0.05em; }
+
+    .product-details h1 { font-size: 2rem; font-weight: 800; margin: 0.5rem 0 0.5rem; line-height: 1.2; }
+    .product-seller { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; font-weight: 500; }
+    .product-seller span { color: var(--text); font-weight: 700; }
+    
+    .promo-app-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+    .promo-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
     .product-description { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
     
     .benefits-list { margin-bottom: 2rem; background: var(--surface); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); }
@@ -194,6 +287,9 @@
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
       .static-page { padding: 1.5rem; }
       .main-wrapper { padding-bottom: 90px; }
+      .segment-control { display: flex; width: 100%; justify-content: space-between; }
+      .segment-btn { flex: 1; text-align: center; padding: 0.5rem; }
+      .carousel-arrow { display: none; }
       
       .bottom-nav {
         display: flex;
@@ -241,7 +337,7 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState } = React;
+    const { useState, useEffect } = React;
 
     const CheckIcon = () => (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -302,111 +398,319 @@
     const PRODUCTS = [
       {
         id: "1",
-        name: "Suporte Ergonômico de Alumínio para Notebook",
-        category: "Tecnologia",
-        price: 189.90,
-        oldPrice: 249.90,
-        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=600&q=80",
-        description: "Eleve seu notebook para a altura ideal dos olhos. Melhora a postura, reduz dores no pescoço e ajuda no resfriamento do aparelho.",
-        benefits: ["Alumínio maciço de alta resistência", "Design dobrável e ultra portátil", "Borrachas antiderrapantes de silicone", "Aumenta o fluxo de ar"],
+        name: "Jaqueta Puffer Bobojaco Nylon Impermeável com Bolso e Capuz removivel",
+        category: "Moda",
+        subCategory: "Masculino",
+        seller: "Championsrox - TikTok Shop",
+        price: 199.90,
+        oldPrice: 249.99,
+        image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/db54a6ea7e034a8b9dee9169653baa77~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/db54a6ea7e034a8b9dee9169653baa77~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p19-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/d0fafab4f7334d75a97ea26cd2d2c014~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/6421a1c047ff461e80b7377af11bbd59~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/405ca71692074a2985d9f2eb3d79b891~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/9124b9b72c7442ab9a7ec70d741eb0fa~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/68f2352325d9442ab7c0270de5221844~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839"
+        ],
+        description: "Jaqueta impermeável com capuz removível e bolsos externos, perfeita para proteção contra o clima frio.",
+        benefits: ["Material nylon impermeável", "Capuz removível", "Bolsos externos para itens essenciais", "Design moderno e confortável"],
         featured: true, trending: true,
+        appPromotion: true,
         platform: "tiktok",
-        affiliateUrl: "https://www.tiktok.com"
+        affiliateUrl: "https://vt.tiktok.com/ZS9k5jHS76uUn-ofDEZ/"
       },
       {
         id: "2",
-        name: "Umidificador e Difusor Smart Aura LED",
-        category: "Casa",
-        price: 219.90,
-        oldPrice: 289.90,
-        image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
-        description: "Transforme o ambiente da sua casa com névoa ultrassônica e iluminação LED relaxante simulando chamas de fogo.",
-        benefits: ["Operação ultra silenciosa", "Desligamento automático de segurança", "Compatível com óleos essenciais", "Névoa contínua por até 12 horas"],
+        name: "Cinta Elastique Feminina Modeladora Redutor Afina Cintura Mulher Fitness Abdominal Tecido Elástico",
+        category: "Saúde e Bem-estar",
+        subCategory: "Feminino",
+        seller: "Rosa Vida - TikTok Shop",
+        price: 45.00,
+        oldPrice: 79.90,
+        image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/675b51f56d9d451ebf19c22df91e1872~tplv-o3syd03w52-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/675b51f56d9d451ebf19c22df91e1872~tplv-o3syd03w52-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/5e0a37547f7641f19b8e45da843676f7~tplv-o3syd03w52-crop-webp:450:450.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c8b50a1c0bef4666820c9656fdde82f9~tplv-o3syd03w52-crop-webp:450:450.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/6679ba893f404b309c7b52a576504dd0~tplv-o3syd03w52-crop-webp:450:450.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/b440d2c41a6342aab1e0bcf8441cd2ba~tplv-o3syd03w52-crop-webp:450:450.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/16acd62939114c1782b565405842231b~tplv-o3syd03w52-crop-webp:450:450.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/252cda88fbaa4281a795c9c547f1d621~tplv-o3syd03w52-crop-webp:450:450.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839"
+        ],
+        description: "Cinta modeladora que afina a cintura e reduz medidas, perfeita para mulheres que buscam um visual mais ajustado.",
+        benefits: ["Modelagem e redução de medidas", "Tecido elástico e confortável", "Design discreto e elegante", "Facilidade de uso e limpeza"],
         featured: true, trending: true,
-        platform: "shopee",
-        affiliateUrl: "https://shopee.com.br"
+        appPromotion: true,
+        platform: "tiktok",
+        affiliateUrl: "https://vt.tiktok.com/ZS9k5jVrsF8ST-RdiEb/"
       },
       {
         id: "3",
-        name: "Sérum Vitamina C Glow & Protection",
-        category: "Beleza",
-        price: 129.90,
-        oldPrice: 169.90,
-        image: "https://images.unsplash.com/photo-1596462502278-27bf85033e5a?auto=format&fit=crop&w=600&q=80",
-        description: "Fórmula potente com Vitamina C pura combinada com Ácido Hialurônico para clareamento de manchas e hidratação profunda.",
-        benefits: ["Ação antioxidante e antissinais", "Uniformiza o tom da pele em semanas", "Absorção rápida sem aspecto oleoso", "Cruelty-free"],
+        name: "Interruptor Controle Remoto Sem Fio Ac 220v 30a 1ch 433mhz",
+        category: "Tecnologia",
+        seller: "TK-MA - TikTok Shop",
+        price: 234.00,
+        oldPrice: 290.90,
+        image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/1ea9c4cb5aa240d481fbc4dfb14db136~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/1ea9c4cb5aa240d481fbc4dfb14db136~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/cba7138671754b5388834042e5ab9d61~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/e210e396119445cc80a5e3b8195a3617~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/53205794a7a14e86a5e673b95e7b3e03~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/1bb5e0406d474877959ec85de133aa63~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/6cd5eb96d9514f3da11131d80facc96b~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/c953a869f75946af91b665be9e1f7bbd~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/81e7c7eed9fc43db89340964b1a490fd~tplv-aphluv4xwc-crop-webp:2048:2048.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://v16m-default.tiktokcdn.com/799adcaf0d54fedc7a994513cd676d1a/6a82503e/video/tos/maliva/tos-maliva-v-7bbcef-us/okaxPAD3KIUT2BS0I2ibgioQEgID6kTQEs9bM/?a=0&bti=PDM8QDI2M2A%3D&&bt=1087&ft=cApXJCz7ThWH14T.LGZmo0P&mime_type=video_mp4&rc=ZjhpOWQ6NTo8ZDw2M2hnNUBpanFrM3c5cjdsNzMzNzNoM0AxXzAuXi5fXy8xYGIvLzQwYSNha3JvMmQ0LmxhLS1kXjZzcw%3D%3D&vvpl=1&l=2026081702045446FD8060009EFC3C01AC&btag=e00078000"
+        ],
+        description: "Interruptor controle remoto sem fio com uso remoto.",
+        benefits: ["Controle remoto de fácil utilização", "Instalação simples e rápida", "Compatível com diversos dispositivos", "Segurança e confiabilidade"],
         featured: false, trending: true,
+        appPromotion: true,
         platform: "tiktok",
         affiliateUrl: "https://www.tiktok.com"
       },
       {
         id: "4",
-        name: "E-book Completo: Guia de Treino em Casa",
-        category: "Fitness",
-        price: 49.90,
-        oldPrice: 89.90,
-        image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=600&q=80",
-        description: "Treine em qualquer lugar com este material completo em PDF. Ideal para musculação, pilates e condicionamento.",
-        benefits: ["Acesso vitalício ao material", "Planilhas de exercícios por nível", "Vídeos demonstrativos exclusivos", "Bônus: Receitas saudáveis"],
+        name: "Deo Colônia Cebolinha Jequiti - 25ml",
+        category: "Beleza",
+        seller: "MEUCHECKOUT - TikTok Shop",
+        price: 21.61,
+        oldPrice: null,
+        image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/bf2c3c5a68794937b7c9039a71cd8507~tplv-aphluv4xwc-crop-webp:635:625.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/bf2c3c5a68794937b7c9039a71cd8507~tplv-aphluv4xwc-crop-webp:635:625.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/37ab853f9b7d4e34a4934238830d2b1a~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a7e0d9b4c8864ed5a9cf28ed989dd646~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://v16m-default.tiktokcdn.com/6420078e07c5e6032cb575c26caf5bcc/6a825e96/video/tos/alisg/tos-alisg-v-f466fc-sg/o4zniUeEgQ6fowpDABREkMFCyQs7gnf8AGJWDL/?a=0&bti=PDM8QDI2M2A%3D&&bt=607&ft=cApXJCz7ThWHXrd.LGZmo0P&mime_type=video_mp4&rc=NTQzOmU6O2Q6ZGc0OzxkZEBpanh5bWw5cm4zNjMzODRmNEAwNC5jY19hX2AxNGNgMy9iYSNkZ29kMmRzNWZhLS1kLy1zcw%3D%3D&vvpl=1&l=2026081703061839CDC1020630CE5CC53E&btag=e00070000",
+        ],
+        description: "Fragrância divertida e suave inspirada no personagem Cebolinha, desenvolvida especialmente para proporcionar um aroma agradável e seguro no dia a dia.",
+        benefits: ["Custo benefício", "Bom aroma", "Fragrância suave e infantil", "Ideal para o uso diário"],
         featured: false, trending: true,
-        platform: "hotmart",
-        affiliateUrl: "https://hotmart.com"
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "https://vt.tiktok.com/ZS9k56MuunfLA-9mfhS/"
       },
-      {
+ {
         id: "5",
-        name: "Fone Sem Fio Pro Cancela Ruído Ativo",
-        category: "Tecnologia",
-        price: 299.90,
-        oldPrice: 429.90,
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
-        description: "Som de alta fidelidade com cancelamento ativo de ruído e microfones HD para chamadas sem ruídos externos.",
-        benefits: ["Até 30h de reprodução com a case", "Resistente a suor e respingos", "Bluetooth 5.3 ultra estável", "Controles por toque"],
-        featured: true, trending: false,
-        platform: "shopee",
-        affiliateUrl: "https://shopee.com.br"
+        name: "Body Splash BARBARIUS 200ml by Primacial - Fragrância Aromática com Notas de Bergamota e Sálvia",
+        category: "Beleza",
+        seller: "Primacial - TikTok Shop",
+        price: 69.90,
+        oldPrice: 75.99,
+        image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/e2cce0c199ff4615a751cb2785241ff6~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/e2cce0c199ff4615a751cb2785241ff6~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/96792f197ca2486d90fd90a85a19fa36~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/1503c04648fb4976a0ab181457669942~tplv-aphluv4xwc-crop-webp:1254:1254.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/377493e84299477faedf106c51a952bd~tplv-aphluv4xwc-crop-webp:818:818.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/bbf80e127bb749658286faad010fe990~tplv-aphluv4xwc-crop-webp:2041:1981.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        ],
+        description: "O Body Splash BARBARIUS 200ml by Primacial traz uma fragrância aromática marcante, combinando notas refrescantes de bergamota e sálvia para o uso diário.",
+        benefits: ["Fragrância aromática marcante", "Notas refrescantes de bergamota e sálvia", "Excelente para o pós-banho e o dia a dia", "Embalagem prática de 200ml"],
+        featured: true,
+        trending: false,
+        appPromotion: true,
+        platform: "tiktok",
+        affiliateUrl: "https://vt.tiktok.com/ZS9k5ofU9aaJK-hGsPa/"
+        
       },
       {
         id: "6",
-        name: "Relógio Smartwatch Fitness Track Pro",
-        category: "Tecnologia",
-        price: 249.90,
-        oldPrice: 349.90,
-        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
-        description: "Monitore batimentos cardíacos, oxigenação no sangue, sono e mais de 100 esportes diretamente no seu pulso.",
-        benefits: ["Tela HD AMOLED de 1.43 polegadas", "Bateria com autonomia para até 10 dias", "Notificações de mensagens e chamadas", "Pulseiras trocáveis"],
+        name: "Perfume Attracione Men Kit Adonis e Attracione Men  - LANÇAMENTO ",
+        category: "Moda",
+        subCategory: "Feminino",
+        seller: "Attracione Men - TikTok Shop",
+        price: 299.00,
+        oldPrice: 379.90,
+        image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5ed683bde7ed485cbd3d4fa60f62d9aa~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5ed683bde7ed485cbd3d4fa60f62d9aa~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/8e9db491a4dd48c3bd8decc3c8bc2c47~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/fa940cd5e5964d4dbb78ab45c86bc344~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/328ea329530f4c679ab9fa7d3ea06f19~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/e957e05ae2b041d9bef2a3f074f87355~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/f5b41c63ebae4fbba5ca5d44d6b826ea~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b290dcd61d764e0ea9c1804966b422d0~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+
+        ],
+        description: "Vestido leve e fluido, perfeito para os dias mais quentes. A estampa floral traz um toque romântico e moderno ao look.",
+        benefits: ["Tecido leve e respirável", "Alças ajustáveis", "Cintura marcada com elástico", "Não fica transparente"],
         featured: true, trending: true,
+        appPromotion:true,
         platform: "tiktok",
-        affiliateUrl: "https://www.tiktok.com"
+        affiliateUrl: "https://vt.tiktok.com/ZS9k5oxDVChs4-7huLn/"
       },
       {
         id: "7",
-        name: "Curso Online: Produtividade Extrema",
-        category: "Estilo de Vida",
-        price: 97.00,
+        name: "Carregador Tipo c 168W Super Turbo Duo USB-PD",
+        category: "Tecnologia",
+        seller: "X-lojas - TikTok Shop",
+        price: 29.99,
         oldPrice: null,
-        image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=600&q=80",
-        description: "Aprenda a organizar sua rotina, dobrar seu foco e conquistar os seus objetivos em tempo recorde com este treinamento em vídeo.",
-        benefits: ["Módulos práticos em vídeo", "Suporte VIP com os professores", "Certificado de conclusão", "Garantia de 7 dias"],
+        image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/48c24ffcc9e7434bb3c77aceb6066c2b~tplv-o3syd03w52-crop-webp:1024:1024.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/48c24ffcc9e7434bb3c77aceb6066c2b~tplv-o3syd03w52-crop-webp:1024:1024.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/8b9ad1f6ced045399fbac39d6e847dd5~tplv-o3syd03w52-crop-webp:1024:1024.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839"
+        ],
+        description: "Carregador de alta velocidade com tecnologia USB-PD, perfeito para dispositivos modernos.",
+        benefits: ["Carregamento rápido e eficiente", "Compatível com múltiplos dispositivos", "Conectores duráveis", "Design compacto e portátil"],
         featured: false, trending: false,
-        platform: "hotmart",
-        affiliateUrl: "https://hotmart.com"
+        appPromotion: true,
+        platform: "tiktok",
+        affiliateUrl: " https://vt.tiktok.com/ZS9k5optQ5u6x-cseYm/"
       },
-      {
+     {
         id: "8",
-        name: "Bolsa Organizadora de Cabos para Viagem",
-        category: "Acessórios",
+        name: "Tênis masculino academia Esportivo Impax Maverik Estiloso esportivo lançamento",
+        category: "Moda",
+        subCategory: "Masculino",
+        seller: "EB CALÇADOS - TikTok Shop",
         price: 59.90,
         oldPrice: 89.90,
-        image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80",
-        description: "Mantenha todos os seus carregadores, cabos e pequenos eletrônicos perfeitamente organizados enquanto estiver em movimento.",
-        benefits: ["Exterior resistente à água", "Múltiplos elásticos e bolsos de malha", "Tamanho compacto para mochilas", "Zíperes duráveis"],
-        featured: false, trending: false,
-        platform: "shopee",
-        affiliateUrl: "https://shopee.com.br"
-      }
+        image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b001093105704d0ebe8cc494c9294cbf~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b001093105704d0ebe8cc494c9294cbf~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a5adf489632d47c995d698af5b4aec84~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/31f6a0c124cd4fa293b44e0d75771d60~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/bc7f93a08f504b1bac55b9e625c39f94~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/396bedf012744699951fb0492cf1afad~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a24df3fa22984394bf684390089ce276~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        ],
+        description: "Tênis masculino esportivo Impax Maverik, ideal para academia, caminhadas e uso casual com muito conforto e estilo.",
+        benefits: ["Extremamente leve e confortável", "Ideal para academia e treinos", "Solado aderente e seguro", "Design moderno e estiloso"],
+        featured: false,
+        trending: false,
+        appPromotion: true,
+        platform: "tiktok",
+        affiliateUrl: "https://vt.tiktok.com/ZS9k5ovqwP6sh-91O9y/"
+      },
+      {
+        id: "9",
+        name: "Camiseta Masculina Canelada estilo Americana RAPPER  Blusa  Camisa Slim Americana Justa Ao Corpo",
+        category: "Moda",
+        subCategory: "Masculino",
+        seller: "Kosmos Store - TikTok Shop",
+        price: 59.99,
+        oldPrice: null,
+        image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/9e716d21e02e4dac9645276f2ae1b9ae~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/9e716d21e02e4dac9645276f2ae1b9ae~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/bd1312b46f914c26a8be0ad08bc81970~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/77de1d21a955474da6856be51445db0a~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a93553e2618140fd92bedf1e62600506~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/967d4e2ca1844cd3a82b5dadfd11a25e~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/9ddf90be456f44019c59447195fab50e~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/944488013a9949f1b76b0185c9b7dbdf~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/c08c04f3256b4cf4abbc354cee40fce9~tplv-aphluv4xwc-crop-webp:1080:1080.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        ],
+        description: "Camiseta masculina canelada estilo americana, ideal para uso casual com muito conforto e estilo.",
+        benefits: ["Extremamente leve e confortável", "Ideal para academia e treinos", "Solado aderente e seguro", "Design moderno e estiloso"],
+        featured: false,
+        trending: false,
+        appPromotion: true,
+        platform: "tiktok",
+        affiliateUrl: "https://vt.tiktok.com/ZS9ka1ekQVvaH-7BQxR/"
+      },
+      {
+        id: "10",
+        name: "Controle Sem Fio para PS4 Compatível com Playstation 4 Dual Vibration ",
+        category: "Tecnologia",
+        seller: "XZ PRESENTES - TikTok Shop",
+        price: 55.00,
+        oldPrice: 69.00,
+        image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/eeae57bcefa846dd93b9aac262d7cbcb~tplv-o3syd03w52-crop-webp:1024:1024.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: ["https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/eeae57bcefa846dd93b9aac262d7cbcb~tplv-o3syd03w52-crop-webp:1024:1024.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/29ff5b851b094bc0bf06badc0cf48dff~tplv-o3syd03w52-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e7f4481e52094a3b9959a76f30523e35~tplv-o3syd03w52-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/6fff2541de0b4d61b6cf4c7d63e2389a~tplv-o3syd03w52-crop-webp:500:500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/09b7efdc344643d4b382afd8f214f547~tplv-o3syd03w52-crop-webp:500:500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/87faaaaffa9745728cbae0baa2f5e3a2~tplv-o3syd03w52-crop-webp:500:500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/b31ae28b1a1c429b999451f438c7636c~tplv-o3syd03w52-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+          "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/f1aec596fce04c01a91d2db30f415f47~tplv-o3syd03w52-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        ],
+        description: "O controle sem fio DualShock 4 para PS4 combina recursos revolucionários e conforto com controles precisos e intuitivos.",
+        benefits: [
+          "Sensibilidade dos botões analógicos e gatilhos aprimorada",
+          "Barra de luz integrada que interage com os jogos",
+          "Conexão sem fio de alta estabilidade",
+          "Botão Share exclusivo para capturar e compartilhar momentos"
+        ],
+        featured: false,
+        trending: false,
+        appPromotion: true,
+        platform: "tiktok",
+        affiliateUrl: "https://vt.tiktok.com/ZS9ka1LKguoQs-XcuXX/"
+      },
+     {
+    id: "11",
+    name: "Mini Fotografia Luz RGB /Branco De Preenchimento Panel led / Móvel Câmera /Vídeo /Tiro Ao Ar Livre",
+    category: "Tecnologia",
+    seller: "Toem casa - TikTok Shop",
+    price: 20.85,
+    oldPrice: null,
+    image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e96e27b01abb44c2bcc4bd3095985d6f~tplv-o3syd03w52-crop-webp:570:570.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+    images: [
+        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e96e27b01abb44c2bcc4bd3095985d6f~tplv-o3syd03w52-crop-webp:570:570.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e20c4d76f8c0425781e3d82269259228~tplv-o3syd03w52-crop-webp:552:552.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c8ffa0c204a8438c9f50811f4b0fa919~tplv-o3syd03w52-crop-webp:568:568.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/03ce10d25a4c458699f46e905bb6f8e5~tplv-o3syd03w52-crop-webp:567:567.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/6df1d14d635545dfa05c8ca84f824a71~tplv-o3syd03w52-crop-webp:575:575.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/49e5ab02484849a392a040a6ba738b82~tplv-o3syd03w52-crop-webp:580:580.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839"
+    ],
+    description: "Luz LED compacta para preenchimento, ideal para celulares e câmeras. Possui modos de iluminação RGB e branco, sendo útil para fotografia, gravação de vídeos, selfies, transmissões ao vivo e fotos ao ar livre. Seu design portátil facilita o transporte e o uso sempre que for necessária uma iluminação adicional.",
+    benefits: [
+        "Modos de iluminação RGB e branco",
+        "Design compacto e portátil",
+        "Compatível com celulares e câmeras",
+        "Ideal para fotografia e gravação de vídeos",
+        "Ótima para selfies, lives e fotos ao ar livre"
+    ],
+    featured: false,
+    trending: true,
+    appPromotion: false,
+    platform: "tiktok",
+    affiliateUrl: "https://vt.tiktok.com/ZS9ka1BC47KN7-9WriB/"
+},
+     {
+    id: "12",
+    name: "Power Bank Basike B078 10.000mAh 22.5W Carga Rápida Com Display",
+    category: "Tecnologia",
+    seller: "Basike_loja - TikTok Shop",
+    price: 200.00,
+    oldPrice: 269.00,
+    image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/2a27dc1421d1494a94aa61bf345ef44f~tplv-aphluv4xwc-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+    images: [
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/2a27dc1421d1494a94aa61bf345ef44f~tplv-aphluv4xwc-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/90e6fdae73a24488be85487ee95daf1b~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/01d9bb5c4ed143b98d3ae5503576fe59~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a1e75b95841541c689234ed5c077a6ce~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/f192d9dfef294fd9a59ea846267ce4c8~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/48a28cc5f288449da589dd06e1ca31cd~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/63f35a9a903d4528bb5feb6bc154c29a~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/0f5bf95e0ec0441097967878fc20bd39~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/8a79aed4a71542cd8faf9f9869fc1acd~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        "https://v16m-default.tiktokcdn.com/1b1be80d8638d783add89d66f4f2cdcb/6a828073/video/tos/alisg/tos-alisg-v-f466fc-sg/oUBtI4wrA1FVjBQXPwIwwAAUiSavySYiCiQEh/?a=0&bti=PDM8QDI2M2A%3D&&bt=583&ft=cApXJCz7ThWHM4D.LGZmo0P&mime_type=video_mp4&rc=aWQ8NDZoM2RoODxkN2U0aUBpamplOG85cmx2NzMzODRmNEAxLi0xYTEtXjAxNC8uYDE0YSNqLmAxMmRrMS9hLS1kLy1zcw%3D%3D&vvpl=1&l=20260817053032E5148CC1B0C2C8B34D85&btag=e00078000"
+    ],
+    description: "Power Bank Basike B078 com capacidade de 10.000mAh, potência de carregamento rápido de até 22,5W e display para acompanhar o nível da bateria. Uma opção prática e portátil para manter seus dispositivos carregados durante o dia.",
+    benefits: [
+        "Capacidade de 10.000mAh",
+        "Carregamento rápido de até 22,5W",
+        "Display para visualizar o nível da bateria",
+        "Design portátil e prático",
+        "Ideal para carregar dispositivos durante o dia"
+    ],
+    featured: false,
+    trending: false,
+    appPromotion: true,
+    platform: "tiktok",
+    affiliateUrl: "https://vt.tiktok.com/ZS9ka1PrNnNCq-8FSCe/"
+},
+      
     ];
 
-    const CATEGORIES = ["Todos", "Tecnologia", "Casa", "Beleza", "Fitness", "Estilo de Vida", "Acessórios"];
+    const CATEGORIES = ["Todos", "Moda", "Tecnologia", "Casa", "Beleza", "Fitness", "Estilo de Vida", "Acessórios"];
 
     const getPlatformBrand = (platform) => {
       switch(platform) {
@@ -414,6 +718,11 @@
         case 'hotmart': return { name: 'Hotmart', color: '#f04e23', Icon: HotmartIcon };
         default: return { name: 'TikTok Shop', color: '#fe2c55', Icon: TikTokIcon };
       }
+    };
+
+    const isVideoUrl = (url) => {
+      if (!url) return false;
+      return url.includes('.mp4') || url.includes('video_mp4') || url.includes('/video/');
     };
 
     const ProductCard = ({ product, navigate }) => {
@@ -428,7 +737,7 @@
           </div>
           <div className="product-info">
             <div>
-              <span className="product-category">{product.category}</span>
+              <span className="product-category">{product.category} {product.subCategory ? `• ${product.subCategory}` : ''}</span>
               <h3 className="product-name">{product.name}</h3>
             </div>
             <div className="product-price-row">
@@ -484,16 +793,24 @@
     const Shop = ({ navigate }) => {
       const [search, setSearch] = useState('');
       const [cat, setCat] = useState('Todos');
+      const [subCat, setSubCat] = useState('Todos');
+
+      const handleCategoryChange = (newCat) => {
+        setCat(newCat);
+        setSubCat('Todos'); 
+      };
 
       const filtered = PRODUCTS.filter(p => {
         const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase());
         const matchCat = cat === 'Todos' || p.category === cat;
-        return matchSearch && matchCat;
+        const matchSubCat = (cat === 'Moda' && subCat !== 'Todos') ? p.subCategory === subCat : true;
+        
+        return matchSearch && matchCat && matchSubCat;
       });
 
       return (
         <div className="container fade-in" style={{ paddingTop: '2rem' }}>
-          <h1 className="section-title" style={{ fontSize: '2.5rem' }}>Todos os Produtos</h1>
+          <h1 className="section-title" style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Todos os Produtos</h1>
           
           <input 
             type="text" 
@@ -503,17 +820,42 @@
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          <div className="category-pill-container">
+          <div className="category-pill-container" style={{ marginBottom: cat === 'Moda' ? '0' : '1.5rem' }}>
             {CATEGORIES.map(c => (
               <button 
                 key={c} 
                 className={`category-pill ${cat === c ? 'active' : ''}`}
-                onClick={() => setCat(c)}
+                onClick={() => handleCategoryChange(c)}
               >
                 {c}
               </button>
             ))}
           </div>
+
+          {cat === 'Moda' && (
+            <div className="fade-in">
+              <div className="segment-control">
+                <button 
+                  className={`segment-btn ${subCat === 'Todos' ? 'active' : ''}`}
+                  onClick={() => setSubCat('Todos')}
+                >
+                  Tudo
+                </button>
+                <button 
+                  className={`segment-btn ${subCat === 'Masculino' ? 'active' : ''}`}
+                  onClick={() => setSubCat('Masculino')}
+                >
+                  Masculino
+                </button>
+                <button 
+                  className={`segment-btn ${subCat === 'Feminino' ? 'active' : ''}`}
+                  onClick={() => setSubCat('Feminino')}
+                >
+                  Feminino
+                </button>
+              </div>
+            </div>
+          )}
 
           {filtered.length > 0 ? (
             <div className="product-grid">
@@ -522,7 +864,7 @@
           ) : (
             <div style={{ textAlign: 'center', padding: '4rem 0' }}>
               <p style={{ color: 'var(--muted)', marginBottom: '1rem' }}>Nenhum produto encontrado.</p>
-              <button className="btn-secondary" onClick={() => { setSearch(''); setCat('Todos'); }}>Limpar Filtros</button>
+              <button className="btn-secondary" onClick={() => { setSearch(''); handleCategoryChange('Todos'); }}>Limpar Filtros</button>
             </div>
           )}
         </div>
@@ -532,6 +874,12 @@
     const ProductDetail = ({ id, navigate }) => {
       const product = PRODUCTS.find(p => p.id === id);
       const [isRedirecting, setIsRedirecting] = useState(false);
+      
+      const [currentImgIndex, setCurrentImgIndex] = useState(0);
+      const [touchStart, setTouchStart] = useState(0);
+      const [touchEnd, setTouchEnd] = useState(0);
+
+      useEffect(() => { setCurrentImgIndex(0); }, [id]);
 
       if (!product) return (
         <div className="container fade-in" style={{ textAlign: 'center', padding: '6rem 0' }}>
@@ -541,6 +889,21 @@
       );
 
       const brand = getPlatformBrand(product.platform);
+      const galleryImages = product.images && product.images.length > 0 ? product.images : [product.image];
+
+      const nextImage = () => setCurrentImgIndex(prev => (prev + 1) % galleryImages.length);
+      const prevImage = () => setCurrentImgIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length);
+
+      const handleTouchStart = (e) => setTouchStart(e.targetTouches[0].clientX);
+      const handleTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+      const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        if (distance > 50) nextImage();
+        if (distance < -50) prevImage();
+        setTouchStart(0);
+        setTouchEnd(0);
+      };
 
       const handleAcquireClick = () => {
         setIsRedirecting(true);
@@ -552,14 +915,64 @@
 
       return (
         <div className="container fade-in product-page">
-          <div className="product-gallery">
-            <img src={product.image} alt={product.name} />
+          
+          <div className="gallery-wrapper">
+            <div 
+              className="carousel-container"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <div 
+                className="carousel-track" 
+                style={{ transform: `translateX(-${currentImgIndex * 100}%)` }}
+              >
+                {galleryImages.map((mediaSrc, idx) => (
+                  <div className="carousel-slide" key={idx}>
+                    {isVideoUrl(mediaSrc) ? (
+                      <video 
+                        src={mediaSrc} 
+                        controls 
+                        playsInline 
+                        className="carousel-video" 
+                      />
+                    ) : (
+                      <img src={mediaSrc} alt={product.name} className="carousel-image" />
+                    )}
+                  </div>
+                ))}
+              </div>
+              
+              {galleryImages.length > 1 && (
+                <>
+                  <button className="carousel-arrow left" onClick={prevImage}>&#10094;</button>
+                  <button className="carousel-arrow right" onClick={nextImage}>&#10095;</button>
+                </>
+              )}
+            </div>
+            
+            {galleryImages.length > 1 && (
+              <div className="image-counter">
+                {currentImgIndex + 1} / {galleryImages.length}
+              </div>
+            )}
           </div>
+
           <div className="product-details">
             <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {product.category}
+              {product.category} {product.subCategory ? `• ${product.subCategory}` : ''}
             </span>
             <h1>{product.name}</h1>
+            <div className="product-seller">
+              Vendido por: <span>{product.seller || "Parceiro Oficial"}</span>
+            </div>
+
+            {product.appPromotion && (
+              <div className="promo-app-badge">
+                <span className="promo-dot"></span>
+                Produto com possível promoção no App
+              </div>
+            )}
             
             <div className="product-price-row" style={{ justifyContent: 'flex-start', marginBottom: '1.5rem', gap: '1rem' }}>
               <span className="price" style={{ fontSize: '2.25rem' }}>R$ {product.price.toFixed(2).replace('.', ',')}</span>
