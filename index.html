@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ianimandoShop | Facilitando o Dia a Dia</title>
+  
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --accent: #000000;
+      --accent-hover: #374151;
+      --radius: 16px;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --transition: all 0.2s ease-in-out;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button { border: none; background: none; cursor: pointer; font-family: inherit; }
+    img { max-width: 100%; height: auto; display: block; }
+    ul { list-style: none; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+    .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
+      padding: 1rem 0;
+    }
+    .header-content { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-weight: 800; font-size: 1.25rem; letter-spacing: -0.025em; cursor: pointer; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links button { font-size: 0.875rem; font-weight: 500; color: var(--muted); transition: var(--transition); }
+    .nav-links button:hover, .nav-links button.active { color: var(--text); }
+    .mobile-menu-btn { display: none; font-size: 1.5rem; }
+
+    .hero {
+      text-align: center;
+      padding: 5rem 1rem;
+      background: var(--surface);
+      border-radius: var(--radius);
+      margin: 2rem 0;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+    }
+    .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.025em; line-height: 1.1; }
+    .hero p { font-size: 1.125rem; color: var(--muted); max-width: 600px; margin: 0 auto 2rem; }
+    
+    .btn-primary {
+      background: var(--accent); color: white; padding: 0.875rem 1.5rem;
+      border-radius: 999px; font-weight: 600; font-size: 0.875rem;
+      transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      padding: 0.875rem 1.5rem; border-radius: 999px; font-weight: 600; font-size: 0.875rem;
+      transition: var(--transition);
+    }
+    .btn-secondary:hover { border-color: var(--muted); background: var(--bg); }
+    
+    .btn-platform {
+      color: white; padding: 0.6rem 1.5rem;
+      border-radius: 8px; font-weight: 600; font-size: 0.85rem; width: max-content; min-width: 110px; height: 40px;
+      transition: var(--transition); display: inline-flex; justify-content: center; align-items: center; gap: 0.4rem;
+      margin-top: 1rem; text-decoration: none;
+    }
+    .btn-platform:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.15); filter: brightness(0.9); }
+    .btn-platform:disabled { opacity: 0.85; cursor: wait; }
+
+    .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    
+    .product-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; transition: var(--transition); display: flex; flex-direction: column;
+      cursor: pointer; position: relative;
+    }
+    .product-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .product-image-container { aspect-ratio: 1 / 1; background: #f3f4f6; position: relative; overflow: hidden; }
+    .product-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .product-card:hover .product-image { transform: scale(1.05); }
+    
+    .badge {
+      position: absolute; top: 1rem; left: 1rem; background: var(--surface); color: var(--text);
+      padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; box-shadow: var(--shadow-sm); z-index: 10;
+    }
+    
+    .product-info { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    .product-category { font-size: 0.7rem; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+    .product-name { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.4; color: var(--text); }
+    .product-price-row { display: flex; align-items: flex-end; justify-content: space-between; margin-top: auto; }
+    .price { font-size: 1.25rem; font-weight: 800; display: block; }
+    .old-price { font-size: 0.875rem; color: var(--muted); text-decoration: line-through; margin-left: 6px; }
+    .view-deal-container { display: flex; align-items: center; gap: 6px; }
+    .view-deal-text { font-size: 0.75rem; font-weight: 600; color: var(--accent); }
+
+    .search-bar {
+      width: 100%; padding: 1.25rem 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);
+      font-size: 1rem; margin-bottom: 2rem; outline: none; background: var(--surface); box-shadow: var(--shadow-sm);
+    }
+    .search-bar:focus { border-color: var(--accent); }
+    
+    .category-pill-container { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    .category-pill-container::-webkit-scrollbar { display: none; }
+    .category-pill {
+      padding: 0.5rem 1.25rem; border-radius: 999px; font-size: 0.875rem; font-weight: 600;
+      white-space: nowrap; transition: var(--transition); border: 1px solid var(--border);
+    }
+    .category-pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .category-pill:not(.active):hover { border-color: var(--muted); }
+
+    .product-page { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; padding: 2rem 0; }
+    .product-gallery { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+    .product-gallery img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
+    .product-details h1 { font-size: 2rem; font-weight: 800; margin: 0.5rem 0 1rem; line-height: 1.2; }
+    .product-description { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+    
+    .benefits-list { margin-bottom: 2rem; background: var(--surface); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); }
+    .benefits-list h3 { font-size: 0.875rem; font-weight: 700; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .benefits-list li { margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.875rem; color: var(--muted); }
+    .benefits-list li svg { flex-shrink: 0; width: 18px; height: 18px; color: var(--accent); }
+
+    .platform-branding {
+      display: flex; align-items: center; gap: 1rem; background: #111827; color: white;
+      padding: 1rem 1.25rem; border-radius: 12px; margin-bottom: 0.5rem;
+    }
+    .platform-icon-wrapper { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .platform-branding p { font-size: 0.875rem; font-weight: 700; margin: 0; }
+    .platform-branding span { display: block; font-size: 0.75rem; color: #9ca3af; }
+
+    .static-page { max-width: 800px; margin: 0 auto; padding: 3rem 0; background: var(--surface); padding: 3rem; border-radius: var(--radius); border: 1px solid var(--border); margin-top: 2rem; }
+    .static-page h1 { font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem; }
+    .static-page p { color: var(--muted); margin-bottom: 1rem; line-height: 1.7; }
+
+    .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 4rem 0 2rem; margin-top: 4rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; }
+    .footer-title { font-weight: 700; margin-bottom: 1.25rem; font-size: 1rem; }
+    .footer-links li { margin-bottom: 0.75rem; }
+    .footer-links button { color: var(--muted); font-size: 0.875rem; transition: var(--transition); }
+    .footer-links button:hover { color: var(--text); }
+    .disclaimer { font-size: 0.75rem; color: var(--muted); text-align: center; padding-top: 2rem; border-top: 1px solid var(--border); line-height: 1.6; }
+
+    .bottom-nav { display: none; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { padding: 3rem 1rem; }
+      .hero h1 { font-size: 2.25rem; }
+      .product-page { grid-template-columns: 1fr; gap: 2rem; padding: 1rem 0; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .static-page { padding: 1.5rem; }
+      .main-wrapper { padding-bottom: 90px; }
+      
+      .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border);
+        z-index: 100;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom));
+      }
+      .bottom-nav-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        color: var(--muted);
+        transition: var(--transition);
+        flex: 1;
+      }
+      .nav-icon-bg {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+      }
+      .bottom-nav-btn.active .nav-icon-bg {
+        background: var(--accent);
+        color: white;
+      }
+      .bottom-nav-btn.active { color: var(--text); }
+      .bottom-nav-btn span { font-size: 0.65rem; font-weight: 600; margin-top: -2px; }
+      .bottom-nav-btn svg { width: 20px; height: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const CheckIcon = () => (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    );
+
+    const TikTokIcon = ({ className = "w-5 h-5", style }) => (
+      <svg className={className} style={style} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.901 2.879 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .546.046.797.126V9.387a6.32 6.32 0 0 0-.797-.053 6.335 6.335 0 0 0-6.336 6.336 6.335 6.335 0 0 0 6.336 6.336 6.335 6.335 0 0 0 6.336-6.336V9.014a8.163 8.163 0 0 0 4.78 1.542V7.122a4.832 4.832 0 0 1-1.005-.436z"/>
+      </svg>
+    );
+
+    const ShopeeIcon = ({ className = "w-5 h-5", style }) => (
+      <svg className={className} style={style} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8.33 6.31h7.33a2.5 2.5 0 0 0-5.01 0h-2.32A4.82 4.82 0 0 1 12 1.5a4.82 4.82 0 0 1 3.68 4.81h2.5c1 0 1.8.84 1.76 1.84l-.84 11.23A3.8 3.8 0 0 1 15.3 23H8.7a3.8 3.8 0 0 1-3.79-3.62L4.07 8.15C4.03 7.15 4.83 6.31 5.83 6.31h2.5zm3.67 4.19c-1.34 0-2.22.6-2.22 1.63 0 1.05.9 1.45 2 1.73 1.25.32 1.54.67 1.54 1.25 0 .6-.64 1.1-1.54 1.1-.9 0-1.63-.42-1.93-1.02l-1.92.86c.64 1.34 1.93 2.15 3.85 2.15 1.73 0 2.66-.77 2.66-1.89 0-1.12-.9-1.5-2.05-1.79-1.12-.29-1.48-.6-1.48-1.22 0-.54.61-1.02 1.48-1.02.8 0 1.4.38 1.66.9l1.83-.93c-.55-1.28-1.73-1.75-3.88-1.75z"/>
+      </svg>
+    );
+
+    const HotmartIcon = ({ className = "w-5 h-5", style }) => (
+      <svg className={className} style={style} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 23C6.477 23 2 18.523 2 13c0-3.35 1.64-6.35 4.14-8.19.45-.33 1.05-.04 1.05.51 0 1.94 1.11 3.65 2.76 4.43.34.16.74-.08.74-.46 0-3.12 1.83-5.93 4.67-7.23.47-.22 1 .15.96.67-.18 2.08.68 4.12 2.29 5.48.33.28.84.09.91-.35.15-1 .02-2.02-.38-2.96-.21-.49.33-.94.8-.73 2.5 1.15 4.06 3.73 4.06 6.83 0 5.523-4.477 10-10 10zm-1.5-4c1.93 0 3.5-1.57 3.5-3.5 0-1.42-.85-2.65-2.07-3.21-.36-.17-.79.08-.79.48 0 1.25-.8 2.36-1.98 2.72-.41.13-.77-.28-.62-.67.4-1.07.25-2.28-.42-3.21-.29-.4-.92-.25-1.02.24-.19.98-.05 2 .4 2.89.2.4-.1.87-.53.77-.92-.2-1.74-.8-2.31-1.58-.29-.41-.95-.2-.95.31C4.2 16.51 5.61 19 10.5 19z"/>
+      </svg>
+    );
+
+    const HomeIcon = () => (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    );
+
+    const ShopIcon = () => (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 0 1-8 0"></path>
+      </svg>
+    );
+
+    const CategoryIcon = () => (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+    );
+
+    const InfoIcon = () => (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+    );
+
+    const PRODUCTS = [
+      {
+        id: "1",
+        name: "Suporte Ergonômico de Alumínio para Notebook",
+        category: "Tecnologia",
+        price: 189.90,
+        oldPrice: 249.90,
+        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=600&q=80",
+        description: "Eleve seu notebook para a altura ideal dos olhos. Melhora a postura, reduz dores no pescoço e ajuda no resfriamento do aparelho.",
+        benefits: ["Alumínio maciço de alta resistência", "Design dobrável e ultra portátil", "Borrachas antiderrapantes de silicone", "Aumenta o fluxo de ar"],
+        featured: true, trending: true,
+        platform: "tiktok",
+        affiliateUrl: "https://www.tiktok.com"
+      },
+      {
+        id: "2",
+        name: "Umidificador e Difusor Smart Aura LED",
+        category: "Casa",
+        price: 219.90,
+        oldPrice: 289.90,
+        image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
+        description: "Transforme o ambiente da sua casa com névoa ultrassônica e iluminação LED relaxante simulando chamas de fogo.",
+        benefits: ["Operação ultra silenciosa", "Desligamento automático de segurança", "Compatível com óleos essenciais", "Névoa contínua por até 12 horas"],
+        featured: true, trending: true,
+        platform: "shopee",
+        affiliateUrl: "https://shopee.com.br"
+      },
+      {
+        id: "3",
+        name: "Sérum Vitamina C Glow & Protection",
+        category: "Beleza",
+        price: 129.90,
+        oldPrice: 169.90,
+        image: "https://images.unsplash.com/photo-1596462502278-27bf85033e5a?auto=format&fit=crop&w=600&q=80",
+        description: "Fórmula potente com Vitamina C pura combinada com Ácido Hialurônico para clareamento de manchas e hidratação profunda.",
+        benefits: ["Ação antioxidante e antissinais", "Uniformiza o tom da pele em semanas", "Absorção rápida sem aspecto oleoso", "Cruelty-free"],
+        featured: false, trending: true,
+        platform: "tiktok",
+        affiliateUrl: "https://www.tiktok.com"
+      },
+      {
+        id: "4",
+        name: "E-book Completo: Guia de Treino em Casa",
+        category: "Fitness",
+        price: 49.90,
+        oldPrice: 89.90,
+        image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=600&q=80",
+        description: "Treine em qualquer lugar com este material completo em PDF. Ideal para musculação, pilates e condicionamento.",
+        benefits: ["Acesso vitalício ao material", "Planilhas de exercícios por nível", "Vídeos demonstrativos exclusivos", "Bônus: Receitas saudáveis"],
+        featured: false, trending: true,
+        platform: "hotmart",
+        affiliateUrl: "https://hotmart.com"
+      },
+      {
+        id: "5",
+        name: "Fone Sem Fio Pro Cancela Ruído Ativo",
+        category: "Tecnologia",
+        price: 299.90,
+        oldPrice: 429.90,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+        description: "Som de alta fidelidade com cancelamento ativo de ruído e microfones HD para chamadas sem ruídos externos.",
+        benefits: ["Até 30h de reprodução com a case", "Resistente a suor e respingos", "Bluetooth 5.3 ultra estável", "Controles por toque"],
+        featured: true, trending: false,
+        platform: "shopee",
+        affiliateUrl: "https://shopee.com.br"
+      },
+      {
+        id: "6",
+        name: "Relógio Smartwatch Fitness Track Pro",
+        category: "Tecnologia",
+        price: 249.90,
+        oldPrice: 349.90,
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+        description: "Monitore batimentos cardíacos, oxigenação no sangue, sono e mais de 100 esportes diretamente no seu pulso.",
+        benefits: ["Tela HD AMOLED de 1.43 polegadas", "Bateria com autonomia para até 10 dias", "Notificações de mensagens e chamadas", "Pulseiras trocáveis"],
+        featured: true, trending: true,
+        platform: "tiktok",
+        affiliateUrl: "https://www.tiktok.com"
+      },
+      {
+        id: "7",
+        name: "Curso Online: Produtividade Extrema",
+        category: "Estilo de Vida",
+        price: 97.00,
+        oldPrice: null,
+        image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=600&q=80",
+        description: "Aprenda a organizar sua rotina, dobrar seu foco e conquistar os seus objetivos em tempo recorde com este treinamento em vídeo.",
+        benefits: ["Módulos práticos em vídeo", "Suporte VIP com os professores", "Certificado de conclusão", "Garantia de 7 dias"],
+        featured: false, trending: false,
+        platform: "hotmart",
+        affiliateUrl: "https://hotmart.com"
+      },
+      {
+        id: "8",
+        name: "Bolsa Organizadora de Cabos para Viagem",
+        category: "Acessórios",
+        price: 59.90,
+        oldPrice: 89.90,
+        image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80",
+        description: "Mantenha todos os seus carregadores, cabos e pequenos eletrônicos perfeitamente organizados enquanto estiver em movimento.",
+        benefits: ["Exterior resistente à água", "Múltiplos elásticos e bolsos de malha", "Tamanho compacto para mochilas", "Zíperes duráveis"],
+        featured: false, trending: false,
+        platform: "shopee",
+        affiliateUrl: "https://shopee.com.br"
+      }
+    ];
+
+    const CATEGORIES = ["Todos", "Tecnologia", "Casa", "Beleza", "Fitness", "Estilo de Vida", "Acessórios"];
+
+    const getPlatformBrand = (platform) => {
+      switch(platform) {
+        case 'shopee': return { name: 'Shopee', color: '#ee4d2d', Icon: ShopeeIcon };
+        case 'hotmart': return { name: 'Hotmart', color: '#f04e23', Icon: HotmartIcon };
+        default: return { name: 'TikTok Shop', color: '#fe2c55', Icon: TikTokIcon };
+      }
+    };
+
+    const ProductCard = ({ product, navigate }) => {
+      const brand = getPlatformBrand(product.platform);
+      
+      return (
+        <div className="product-card" onClick={() => navigate('product', product.id)}>
+          <div className="product-image-container">
+            <img src={product.image} alt={product.name} className="product-image" loading="lazy" />
+            {product.trending && <span className="badge">Em Alta</span>}
+            {!product.trending && product.featured && <span className="badge" style={{ background: '#f3f4f6', color: '#111827' }}>Destaque</span>}
+          </div>
+          <div className="product-info">
+            <div>
+              <span className="product-category">{product.category}</span>
+              <h3 className="product-name">{product.name}</h3>
+            </div>
+            <div className="product-price-row">
+              <div>
+                <span className="price">R$ {product.price.toFixed(2).replace('.', ',')}</span>
+                {product.oldPrice && <span className="old-price">R$ {product.oldPrice.toFixed(2).replace('.', ',')}</span>}
+              </div>
+              <div className="view-deal-container">
+                <brand.Icon className="w-4 h-4" style={{ color: brand.color }} />
+                <span className="view-deal-text">Ver Oferta &rarr;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const Home = ({ navigate }) => {
+      const trending = PRODUCTS.filter(p => p.trending).slice(0, 4);
+      const featured = PRODUCTS.filter(p => p.featured).slice(0, 4);
+
+      return (
+        <div className="container fade-in">
+          <section className="hero">
+            <h1>ianimandoShop.<br/>Facilitando o Dia a Dia.</h1>
+            <p>Descubra produtos úteis, interessantes e em alta selecionados para facilitar a sua rotina.</p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button className="btn-primary" onClick={() => navigate('shop')}>Explorar Produtos</button>
+              <button className="btn-secondary" onClick={() => navigate('categories')}>Ver Categorias</button>
+            </div>
+          </section>
+
+          <section>
+            <div className="section-title">
+              <h2>Em Alta Agora</h2>
+              <button onClick={() => navigate('shop')} style={{ fontSize: '0.875rem', fontWeight: 600 }}>Ver Tudo &rarr;</button>
+            </div>
+            <div className="product-grid">
+              {trending.map(product => <ProductCard key={product.id} product={product} navigate={navigate} />)}
+            </div>
+          </section>
+
+          <section>
+            <div className="section-title"><h2>Escolhas do Editor</h2></div>
+            <div className="product-grid">
+              {featured.map(product => <ProductCard key={product.id} product={product} navigate={navigate} />)}
+            </div>
+          </section>
+        </div>
+      );
+    };
+
+    const Shop = ({ navigate }) => {
+      const [search, setSearch] = useState('');
+      const [cat, setCat] = useState('Todos');
+
+      const filtered = PRODUCTS.filter(p => {
+        const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase());
+        const matchCat = cat === 'Todos' || p.category === cat;
+        return matchSearch && matchCat;
+      });
+
+      return (
+        <div className="container fade-in" style={{ paddingTop: '2rem' }}>
+          <h1 className="section-title" style={{ fontSize: '2.5rem' }}>Todos os Produtos</h1>
+          
+          <input 
+            type="text" 
+            placeholder="Buscar produtos..." 
+            className="search-bar"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <div className="category-pill-container">
+            {CATEGORIES.map(c => (
+              <button 
+                key={c} 
+                className={`category-pill ${cat === c ? 'active' : ''}`}
+                onClick={() => setCat(c)}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+
+          {filtered.length > 0 ? (
+            <div className="product-grid">
+              {filtered.map(product => <ProductCard key={product.id} product={product} navigate={navigate} />)}
+            </div>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+              <p style={{ color: 'var(--muted)', marginBottom: '1rem' }}>Nenhum produto encontrado.</p>
+              <button className="btn-secondary" onClick={() => { setSearch(''); setCat('Todos'); }}>Limpar Filtros</button>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const ProductDetail = ({ id, navigate }) => {
+      const product = PRODUCTS.find(p => p.id === id);
+      const [isRedirecting, setIsRedirecting] = useState(false);
+
+      if (!product) return (
+        <div className="container fade-in" style={{ textAlign: 'center', padding: '6rem 0' }}>
+          <h2>Produto não encontrado</h2>
+          <button className="btn-primary" onClick={() => navigate('shop')} style={{ marginTop: '1rem' }}>Voltar para a Loja</button>
+        </div>
+      );
+
+      const brand = getPlatformBrand(product.platform);
+
+      const handleAcquireClick = () => {
+        setIsRedirecting(true);
+        setTimeout(() => {
+          window.open(product.affiliateUrl, '_blank');
+          setIsRedirecting(false);
+        }, 1200);
+      };
+
+      return (
+        <div className="container fade-in product-page">
+          <div className="product-gallery">
+            <img src={product.image} alt={product.name} />
+          </div>
+          <div className="product-details">
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {product.category}
+            </span>
+            <h1>{product.name}</h1>
+            
+            <div className="product-price-row" style={{ justifyContent: 'flex-start', marginBottom: '1.5rem', gap: '1rem' }}>
+              <span className="price" style={{ fontSize: '2.25rem' }}>R$ {product.price.toFixed(2).replace('.', ',')}</span>
+              {product.oldPrice && <span className="old-price" style={{ fontSize: '1.25rem' }}>R$ {product.oldPrice.toFixed(2).replace('.', ',')}</span>}
+            </div>
+            
+            <p className="product-description">{product.description}</p>
+            
+            <div className="benefits-list">
+              <h3>Por que gostamos</h3>
+              <ul>
+                {product.benefits.map((benefit, index) => (
+                  <li key={index}><CheckIcon /> <span>{benefit}</span></li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="platform-branding">
+              <div className="platform-icon-wrapper" style={{ backgroundColor: brand.color }}>
+                <brand.Icon style={{ color: '#fff', width: '20px', height: '20px' }} />
+              </div>
+              <div>
+                <p>Oficial {brand.name}</p>
+                <span>Compra segura e protegida via plataforma</span>
+              </div>
+            </div>
+
+            <button 
+              onClick={handleAcquireClick}
+              disabled={isRedirecting}
+              className="btn-platform"
+              style={{ backgroundColor: brand.color }}
+            >
+              {isRedirecting ? <div className="spinner"></div> : "Adquirir"}
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    const Categories = ({ navigate }) => (
+      <div className="container fade-in" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
+        <h1 className="section-title" style={{ fontSize: '2.5rem' }}>Categorias</h1>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.5rem' }}>
+          {CATEGORIES.filter(c => c !== 'Todos').map(cat => (
+            <button 
+              key={cat} 
+              onClick={() => { navigate('shop'); }}
+              style={{ background: 'var(--surface)', border: '1px solid var(--border)', padding: '3rem 1rem', borderRadius: 'var(--radius)', textAlign: 'center', fontWeight: 700, fontSize: '1.125rem', transition: 'var(--transition)' }}
+              onMouseOver={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+              onMouseOut={e => e.currentTarget.style.borderColor = 'var(--border)'}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+
+    const StaticPage = ({ title, content }) => (
+      <div className="container fade-in">
+        <div className="static-page">
+          <h1>{title}</h1>
+          <p>{content}</p>
+          <p>Recomendações selecionadas e pensadas para tornar o seu dia a dia um pouco mais fácil, prático e interessante.</p>
+        </div>
+      </div>
+    );
+
+    const App = () => {
+      const [view, setView] = useState(() => {
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('p');
+        const pageId = params.get('page');
+        
+        if (productId) return { page: 'product', id: productId };
+        if (pageId) return { page: pageId, id: null };
+        return { page: 'home', id: null };
+      });
+
+      const navigate = (page, id = null) => {
+        setView({ page, id });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        let newUrl = window.location.pathname;
+        if (id) {
+          newUrl += `?p=${id}`;
+        } else if (page !== 'home') {
+          newUrl += `?page=${page}`;
+        }
+        window.history.pushState({}, '', newUrl);
+      };
+
+      React.useEffect(() => {
+        const handlePopState = () => {
+          const params = new URLSearchParams(window.location.search);
+          const productId = params.get('p');
+          const pageId = params.get('page');
+          if (productId) setView({ page: 'product', id: productId });
+          else if (pageId) setView({ page: pageId, id: null });
+          else setView({ page: 'home', id: null });
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+      }, []);
+
+      const renderView = () => {
+        switch (view.page) {
+          case 'home': return <Home navigate={navigate} />;
+          case 'shop': return <Shop navigate={navigate} />;
+          case 'product': return <ProductDetail id={view.id} navigate={navigate} />;
+          case 'categories': return <Categories navigate={navigate} />;
+          case 'about': return <StaticPage title="Sobre Nós" content="Nós descobrimos produtos úteis, interessantes e em alta na internet." />;
+          case 'contact': return <StaticPage title="Contato" content="Fale conosco através do email contato@ianimandoshop.com." />;
+          case 'privacy': return <StaticPage title="Política de Privacidade" content="Nós respeitamos a sua privacidade e seus dados." />;
+          case 'terms': return <StaticPage title="Termos de Uso" content="Estes são os termos de uso para a nossa vitrine de afiliados." />;
+          case 'disclosure': return <StaticPage title="Aviso de Afiliado" content="Podemos ganhar uma comissão se você comprar através dos nossos links, sem custo extra para você." />;
+          default: return <Home navigate={navigate} />;
+        }
+      };
+
+      return (
+        <div className="main-wrapper" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          
+          <header className="header">
+            <div className="container header-content">
+              <div className="logo" onClick={() => navigate('home')}>ianimandoShop</div>
+              <nav className="nav-links">
+                <button className={view.page === 'home' ? 'active' : ''} onClick={() => navigate('home')}>Início</button>
+                <button className={view.page === 'shop' ? 'active' : ''} onClick={() => navigate('shop')}>Loja</button>
+                <button className={view.page === 'categories' ? 'active' : ''} onClick={() => navigate('categories')}>Categorias</button>
+                <button className={view.page === 'about' ? 'active' : ''} onClick={() => navigate('about')}>Sobre</button>
+              </nav>
+            </div>
+          </header>
+
+          <main style={{ flex: 1 }}>
+            {renderView()}
+          </main>
+
+          <footer className="footer">
+            <div className="container">
+              <div className="footer-grid">
+                <div>
+                  <h3 className="footer-title">ianimandoShop</h3>
+                  <p style={{ color: 'var(--muted)', fontSize: '0.875rem', maxWidth: '300px' }}>
+                    Descubra produtos úteis, interessantes e em alta selecionados para facilitar o seu dia a dia.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="footer-title">Links Rápidos</h3>
+                  <ul className="footer-links">
+                    <li><button onClick={() => navigate('shop')}>Todos os Produtos</button></li>
+                    <li><button onClick={() => navigate('categories')}>Categorias</button></li>
+                    <li><button onClick={() => navigate('about')}>Sobre Nós</button></li>
+                    <li><button onClick={() => navigate('contact')}>Contato</button></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="footer-title">Legal</h3>
+                  <ul className="footer-links">
+                    <li><button onClick={() => navigate('privacy')}>Política de Privacidade</button></li>
+                    <li><button onClick={() => navigate('terms')}>Termos de Uso</button></li>
+                    <li><button onClick={() => navigate('disclosure')}>Aviso de Afiliado</button></li>
+                  </ul>
+                </div>
+              </div>
+              <div className="disclaimer">
+                Alguns links neste site são de afiliados. Se você comprar através deles, podemos ganhar uma comissão sem custo extra para você.
+              </div>
+            </div>
+          </footer>
+
+          <nav className="bottom-nav">
+            <button className={`bottom-nav-btn ${view.page === 'home' ? 'active' : ''}`} onClick={() => navigate('home')}>
+              <div className="nav-icon-bg">
+                <HomeIcon />
+              </div>
+              <span>Início</span>
+            </button>
+            <button className={`bottom-nav-btn ${view.page === 'shop' ? 'active' : ''}`} onClick={() => navigate('shop')}>
+              <div className="nav-icon-bg">
+                <ShopIcon />
+              </div>
+              <span>Loja</span>
+            </button>
+            <button className={`bottom-nav-btn ${view.page === 'categories' ? 'active' : ''}`} onClick={() => navigate('categories')}>
+              <div className="nav-icon-bg">
+                <CategoryIcon />
+              </div>
+              <span>Categorias</span>
+            </button>
+            <button className={`bottom-nav-btn ${view.page === 'about' ? 'active' : ''}`} onClick={() => navigate('about')}>
+              <div className="nav-icon-bg">
+                <InfoIcon />
+              </div>
+              <span>Sobre</span>
+            </button>
+          </nav>
+
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
