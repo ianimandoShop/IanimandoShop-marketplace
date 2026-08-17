@@ -6,9 +6,9 @@
   <!-- Essa tag abaixo resolve o problema do TikTok bloquear o vídeo -->
   <meta name="referrer" content="no-referrer">
   <title>ianimandoShop | Facilitando o Dia a Dia</title>
-
-  <!-- SCRIPT DO GOOGLE ADSENSE -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9811516009541726" crossorigin="anonymous"></script>
+  
+  <!-- FAVICON / ÍCONE DE CIMA -->
+  <link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/dmmohbsc5/image/upload/v1786974066/Gemini_Generated_Image_smyn1ksmyn1ksmyn_sg5iqb.jpg">
   
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -84,26 +84,68 @@
 
     .hero {
       text-align: center;
-      padding: 5rem 1rem;
+      padding: 6rem 1rem;
       background: var(--surface);
       border-radius: var(--radius);
       margin: 2rem 0;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
     }
-    .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.025em; line-height: 1.1; }
-    .hero p { font-size: 1.125rem; color: var(--muted); max-width: 600px; margin: 0 auto 2rem; }
+    .hero h1 { 
+      font-size: 3rem; 
+      font-weight: 800; 
+      margin-bottom: 1rem; 
+      letter-spacing: -0.025em; 
+      line-height: 1.1; 
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* SAPO AUMENTADO EM 2 VEZES E COM TRANSPARÊNCIA MANTIDA */
+    .hero-frog-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1900px;
+      max-width: none;
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: 0;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+    }
+    .hero-frog-bg img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .hero p { 
+      font-size: 1.125rem; 
+      color: var(--muted); 
+      max-width: 600px; 
+      margin: 0 auto 2rem; 
+      position: relative;
+      z-index: 2;
+    }
     
     .btn-primary {
       background: var(--accent); color: white; padding: 0.875rem 1.5rem;
       border-radius: 999px; font-weight: 600; font-size: 0.875rem;
       transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      position: relative;
+      z-index: 2;
     }
     .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
     .btn-secondary {
       background: var(--surface); color: var(--text); border: 1px solid var(--border);
       padding: 0.875rem 1.5rem; border-radius: 999px; font-weight: 600; font-size: 0.875rem;
       transition: var(--transition);
+      position: relative;
+      z-index: 2;
     }
     .btn-secondary:hover { border-color: var(--muted); background: var(--bg); }
     
@@ -190,6 +232,7 @@
     .carousel-container { 
       position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: var(--radius) var(--radius) 0 0;
       touch-action: pan-y;
+      background: #000;
     }
     
     .carousel-track {
@@ -203,8 +246,10 @@
       width: 100%;
       height: 100%;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
     .carousel-image {
       width: 100%;
       height: 100%;
@@ -220,6 +265,44 @@
       pointer-events: auto;
     }
 
+    .modern-video-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .modern-play-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.25s ease;
+    }
+    .play-button-circle {
+      width: 68px;
+      height: 68px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111827;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, background 0.2s ease;
+      padding-left: 4px;
+    }
+    .modern-video-wrapper:hover .play-button-circle {
+      transform: scale(1.1);
+      background: #ffffff;
+    }
+
     .carousel-arrow {
       position: absolute; top: 50%; transform: translateY(-50%);
       background: rgba(255, 255, 255, 0.9); border: none; width: 40px; height: 40px;
@@ -231,7 +314,7 @@
     .carousel-arrow.right { right: 16px; }
     .image-counter { text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--text); margin-top: 1rem; letter-spacing: 0.05em; }
 
-    .product-details h1 { font-size: 2rem; font-weight: 800; margin: 0.5rem 0 0.5rem; line-height: 1.2; }
+    .product-details h1 { font-size: 2.0rem; font-weight: 800; margin: 0.5rem 0 0.5rem; line-height: 1.2; }
     .product-seller { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; font-weight: 500; }
     .product-seller span { color: var(--text); font-weight: 700; }
     
@@ -280,38 +363,6 @@
     .static-page h1 { font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem; }
     .static-page p { color: var(--muted); margin-bottom: 1rem; line-height: 1.7; }
 
-    /* ESTILOS DO ANÚNCIO */
-    .ad-banner-container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1.25rem;
-      text-align: center;
-    }
-    .ad-banner-content {
-      display: block;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-      min-height: 100px; /* Garante que há espaço enquanto o anúncio carrega */
-    }
-    .ad-banner-content:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-    }
-    .ad-label {
-      display: block;
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-top: 0.5rem;
-      letter-spacing: 0.05em;
-      font-weight: 600;
-    }
-
     .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 4rem 0 2rem; margin-top: 4rem; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; }
     .footer-title { font-weight: 700; margin-bottom: 1.25rem; font-size: 1rem; }
@@ -324,7 +375,7 @@
 
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .hero { padding: 3rem 1rem; }
+      .hero { padding: 4rem 1rem; }
       .hero h1 { font-size: 2.25rem; }
       .product-page { grid-template-columns: 1fr; gap: 2rem; padding: 1rem 0; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
@@ -387,7 +438,7 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useRef } = React;
 
     const CheckIcon = () => (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -562,7 +613,6 @@
         appPromotion: true,
         platform: "tiktok",
         affiliateUrl: "https://vt.tiktok.com/ZS9k5ofU9aaJK-hGsPa/"
-        
       },
       {
         id: "6",
@@ -581,7 +631,6 @@
           "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/e957e05ae2b041d9bef2a3f074f87355~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
           "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/f5b41c63ebae4fbba5ca5d44d6b826ea~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
           "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b290dcd61d764e0ea9c1804966b422d0~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-
         ],
         description: "Vestido leve e fluido, perfeito para os dias mais quentes. A estampa floral traz um toque romântico e moderno ao look.",
         benefits: ["Tecido leve e respirável", "Alças ajustáveis", "Cintura marcada com elástico", "Não fica transparente"],
@@ -691,70 +740,214 @@
         platform: "tiktok",
         affiliateUrl: "https://vt.tiktok.com/ZS9ka1LKguoQs-XcuXX/"
       },
-     {
-    id: "11",
-    name: "Mini Fotografia Luz RGB /Branco De Preenchimento Panel led / Móvel Câmera /Vídeo /Tiro Ao Ar Livre",
-    category: "Tecnologia",
-    seller: "Toem casa - TikTok Shop",
-    price: 20.85,
-    oldPrice: null,
-    image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e96e27b01abb44c2bcc4bd3095985d6f~tplv-o3syd03w52-crop-webp:570:570.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-    images: [
-        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e96e27b01abb44c2bcc4bd3095985d6f~tplv-o3syd03w52-crop-webp:570:570.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e20c4d76f8c0425781e3d82269259228~tplv-o3syd03w52-crop-webp:552:552.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c8ffa0c204a8438c9f50811f4b0fa919~tplv-o3syd03w52-crop-webp:568:568.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/03ce10d25a4c458699f46e905bb6f8e5~tplv-o3syd03w52-crop-webp:567:567.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/6df1d14d635545dfa05c8ca84f824a71~tplv-o3syd03w52-crop-webp:575:575.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/49e5ab02484849a392a040a6ba738b82~tplv-o3syd03w52-crop-webp:580:580.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839"
-    ],
-    description: "Luz LED compacta para preenchimento, ideal para celulares e câmeras. Possui modos de iluminação RGB e branco, sendo útil para fotografia, gravação de vídeos, selfies, transmissões ao vivo e fotos ao ar livre. Seu design portátil facilita o transporte e o uso sempre que for necessária uma iluminação adicional.",
-    benefits: [
-        "Modos de iluminação RGB e branco",
-        "Design compacto e portátil",
-        "Compatível com celulares e câmeras",
-        "Ideal para fotografia e gravação de vídeos",
-        "Ótima para selfies, lives e fotos ao ar livre"
-    ],
-    featured: false,
-    trending: true,
-    appPromotion: false,
-    platform: "tiktok",
-    affiliateUrl: "https://vt.tiktok.com/ZS9ka1BC47KN7-9WriB/"
-},
-     {
-    id: "12",
-    name: "Power Bank Basike B078 10.000mAh 22.5W Carga Rápida Com Display",
-    category: "Tecnologia",
-    seller: "Basike_loja - TikTok Shop",
-    price: 200.00,
-    oldPrice: 269.00,
-    image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/2a27dc1421d1494a94aa61bf345ef44f~tplv-aphluv4xwc-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-    images: [
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/2a27dc1421d1494a94aa61bf345ef44f~tplv-aphluv4xwc-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/90e6fdae73a24488be85487ee95daf1b~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/01d9bb5c4ed143b98d3ae5503576fe59~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a1e75b95841541c689234ed5c077a6ce~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/f192d9dfef294fd9a59ea846267ce4c8~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/48a28cc5f288449da589dd06e1ca31cd~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/63f35a9a903d4528bb5feb6bc154c29a~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/0f5bf95e0ec0441097967878fc20bd39~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-        "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/8a79aed4a71542cd8faf9f9869fc1acd~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
-    ],
-    description: "Power Bank Basike B078 com capacidade de 10.000mAh, potência de carregamento rápido de até 22,5W e display para acompanhar o nível da bateria. Uma opção prática e portátil para manter seus dispositivos carregados durante o dia.",
-    benefits: [
-        "Capacidade de 10.000mAh",
-        "Carregamento rápido de até 22,5W",
-        "Display para visualizar o nível da bateria",
-        "Design portátil e prático",
-        "Ideal para carregar dispositivos durante o dia"
-    ],
-    featured: false,
-    trending: false,
-    appPromotion: true,
-    platform: "tiktok",
-    affiliateUrl: "https://vt.tiktok.com/ZS9ka1PrNnNCq-8FSCe/"
-}
-      
+      {
+        id: "11",
+        name: "Mini Fotografia Luz RGB /Branco De Preenchimento Panel led / Móvel Câmera /Vídeo /Tiro Ao Ar Livre",
+        category: "Tecnologia",
+        seller: "Toem casa - TikTok Shop",
+        price: 20.85,
+        oldPrice: null,
+        image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e96e27b01abb44c2bcc4bd3095985d6f~tplv-o3syd03w52-crop-webp:570:570.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+            "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e96e27b01abb44c2bcc4bd3095985d6f~tplv-o3syd03w52-crop-webp:570:570.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/e20c4d76f8c0425781e3d82269259228~tplv-o3syd03w52-crop-webp:552:552.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c8ffa0c204a8438c9f50811f4b0fa919~tplv-o3syd03w52-crop-webp:568:568.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/03ce10d25a4c458699f46e905bb6f8e5~tplv-o3syd03w52-crop-webp:567:567.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/6df1d14d635545dfa05c8ca84f824a71~tplv-o3syd03w52-crop-webp:575:575.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/49e5ab02484849a392a040a6ba738b82~tplv-o3syd03w52-crop-webp:580:580.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839"
+        ],
+        description: "Luz LED compacta para preenchimento, ideal para celulares e câmeras. Possui modos de iluminação RGB e branco, sendo útil para fotografia, gravação de vídeos, selfies, transmissões ao vivo e fotos ao ar livre. Seu design portátil facilita o transporte e o uso sempre que for necessária uma iluminação adicional.",
+        benefits: [
+            "Modos de iluminação RGB e branco",
+            "Design compacto e portátil",
+            "Compatível com celulares e câmeras",
+            "Ideal para fotografia e gravação de vídeos",
+            "Ótima para selfies, lives e fotos ao ar livre"
+        ],
+        featured: false,
+        trending: true,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "https://vt.tiktok.com/ZS9ka1BC47KN7-9WriB/"
+      },
+      {
+        id: "12",
+        name: "Power Bank Basike B078 10.000mAh 22.5W Carga Rápida Com Display",
+        category: "Tecnologia",
+        seller: "Basike_loja - TikTok Shop",
+        price: 200.00,
+        oldPrice: 269.00,
+        image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/2a27dc1421d1494a94aa61bf345ef44f~tplv-aphluv4xwc-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+        images: [
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/2a27dc1421d1494a94aa61bf345ef44f~tplv-aphluv4xwc-crop-webp:800:800.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/90e6fdae73a24488be85487ee95daf1b~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/01d9bb5c4ed143b98d3ae5503576fe59~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/a1e75b95841541c689234ed5c077a6ce~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/f192d9dfef294fd9a59ea846267ce4c8~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/48a28cc5f288449da589dd06e1ca31cd~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/63f35a9a903d4528bb5feb6bc154c29a~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/0f5bf95e0ec0441097967878fc20bd39~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/8a79aed4a71542cd8faf9f9869fc1acd~tplv-aphluv4xwc-crop-webp:1500:1500.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my&from=2378011839",
+            "https://v16m-default.tiktokcdn.com/1b1be80d863783add89d66f4f2cdcb/6a828073/video/tos/alisg/tos-alisg-v-f466fc-sg/oUBtI4wrA1FVjBQXPwIwwAAUiSavySYiCiQEh/?a=0&bti=PDM8QDI2M2A%3D&&bt=583&ft=cApXJCz7ThWHM4D.LGZmo0P&mime_type=video_mp4&rc=aWQ8NDZoM2RoODxkN2U0aUBpamplOG85cmx2NzMzODRmNEAxLi0xYTEtXjAxNC8uYDE0YSNqLmAxMmRrMS9hLS1kLy1zcw%3D%3D&vvpl=1&l=20260817053032E5148CC1B0C2C8B34D85&btag=e00078000"
+        ],
+        description: "Power Bank Basike B078 com capacidade de 10.000mAh, potência de carregamento rápido de até 22,5W e display para acompanhar o nível da bateria. Uma opção prática e portátil para manter seus dispositivos carregados durante o dia.",
+        benefits: [
+            "Capacidade de 10.000mAh",
+            "Carregamento rápido de até 22,5W",
+            "Display para visualizar o nível da bateria",
+            "Design portátil e prático",
+            "Ideal para carregar dispositivos durante o dia"
+        ],
+        featured: false,
+        trending: false,
+        appPromotion: true,
+        platform: "tiktok",
+        affiliateUrl: "https://vt.tiktok.com/ZS9ka1PrNnNCq-8FSCe/"
+      },
+      {
+        id: "13",
+        name: "",
+        category: "",
+        subCategory: "",
+        seller: "",
+        price: 0.00,
+        oldPrice: null,
+        image: "",
+        images: [],
+        description: "",
+        benefits: [],
+        featured: false,
+        trending: false,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "YOUR_AFFILIATE_LINK_HERE"
+      },
+      {
+        id: "14",
+        name: "",
+        category: "",
+        subCategory: "",
+        seller: "",
+        price: 0.00,
+        oldPrice: null,
+        image: "",
+        images: [],
+        description: "",
+        benefits: [],
+        featured: false,
+        trending: false,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "YOUR_AFFILIATE_LINK_HERE"
+      },
+      {
+        id: "15",
+        name: "",
+        category: "",
+        subCategory: "",
+        seller: "",
+        price: 0.00,
+        oldPrice: null,
+        image: "",
+        images: [],
+        description: "",
+        benefits: [],
+        featured: false,
+        trending: false,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "YOUR_AFFILIATE_LINK_HERE"
+      },
+      {
+        id: "16",
+        name: "",
+        category: "",
+        subCategory: "",
+        seller: "",
+        price: 0.00,
+        oldPrice: null,
+        image: "",
+        images: [],
+        description: "",
+        benefits: [],
+        featured: false,
+        trending: false,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "YOUR_AFFILIATE_LINK_HERE"
+      },
+      {
+        id: "17",
+        name: "",
+        category: "",
+        subCategory: "",
+        seller: "",
+        price: 0.00,
+        oldPrice: null,
+        image: "",
+        images: [],
+        description: "",
+        benefits: [],
+        featured: false,
+        trending: false,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "YOUR_AFFILIATE_LINK_HERE"
+      },
+      {
+        id: "18",
+        name: "",
+        category: "",
+        subCategory: "",
+        seller: "",
+        price: 0.00,
+        oldPrice: null,
+        image: "",
+        images: [],
+        description: "",
+        benefits: [],
+        featured: false,
+        trending: false,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "YOUR_AFFILIATE_LINK_HERE"
+      },
+      {
+        id: "19",
+        name: "",
+        category: "",
+        subCategory: "",
+        seller: "",
+        price: 0.00,
+        oldPrice: null,
+        image: "",
+        images: [],
+        description: "",
+        benefits: [],
+        featured: false,
+        trending: false,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "YOUR_AFFILIATE_LINK_HERE"
+      },
+      {
+        id: "20",
+        name: "",
+        category: "",
+        subCategory: "",
+        seller: "",
+        price: 0.00,
+        oldPrice: null,
+        image: "",
+        images: [],
+        description: "",
+        benefits: [],
+        featured: false,
+        trending: false,
+        appPromotion: false,
+        platform: "tiktok",
+        affiliateUrl: "YOUR_AFFILIATE_LINK_HERE"
+      }
     ];
 
     const CATEGORIES = ["Todos", "Moda", "Tecnologia", "Casa", "Beleza", "Fitness", "Estilo de Vida", "Acessórios"];
@@ -772,7 +965,48 @@
       return url.includes('.mp4') || url.includes('video_mp4') || url.includes('/video/');
     };
 
+    const ModernVideoPlayer = ({ src }) => {
+      const videoRef = useRef(null);
+      const [isPlaying, setIsPlaying] = useState(false);
+
+      const togglePlay = (e) => {
+        e.stopPropagation();
+        if (videoRef.current) {
+          if (isPlaying) {
+            videoRef.current.pause();
+          } else {
+            videoRef.current.play();
+          }
+          setIsPlaying(!isPlaying);
+        }
+      };
+
+      return (
+        <div className="modern-video-wrapper" onClick={togglePlay}>
+          <video 
+            ref={videoRef}
+            src={src} 
+            playsInline 
+            controls
+            className="carousel-video"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+          />
+          {!isPlaying && (
+            <div className="modern-play-overlay">
+              <div className="play-button-circle">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
     const ProductCard = ({ product, navigate }) => {
+      if (!product.name) return null;
       const brand = getPlatformBrand(product.platform);
       
       return (
@@ -803,12 +1037,15 @@
     };
 
     const Home = ({ navigate }) => {
-      const trending = PRODUCTS.filter(p => p.trending).slice(0, 4);
-      const featured = PRODUCTS.filter(p => p.featured).slice(0, 4);
+      const trending = PRODUCTS.filter(p => p.trending && p.name).slice(0, 4);
+      const featured = PRODUCTS.filter(p => p.featured && p.name).slice(0, 4);
 
       return (
         <div className="container fade-in">
           <section className="hero">
+            <div className="hero-frog-bg">
+              <img src="https://res.cloudinary.com/dmmohbsc5/image/upload/v1786974609/Gemini_Generated_Image_smyn1ksmyn1ksmyn-removebg-preview_m7pfgm.png" alt="Sapo ianimandoShop" />
+            </div>
             <h1>ianimandoShop.<br/>Facilitando o Dia a Dia.</h1>
             <p>Descubra produtos úteis, interessantes e em alta selecionados para facilitar a sua rotina.</p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -837,10 +1074,14 @@
       );
     };
 
-    const Shop = ({ navigate }) => {
+    const Shop = ({ navigate, initialCategory = 'Todos' }) => {
       const [search, setSearch] = useState('');
-      const [cat, setCat] = useState('Todos');
+      const [cat, setCat] = useState(initialCategory);
       const [subCat, setSubCat] = useState('Todos');
+
+      useEffect(() => {
+        setCat(initialCategory);
+      }, [initialCategory]);
 
       const handleCategoryChange = (newCat) => {
         setCat(newCat);
@@ -848,6 +1089,7 @@
       };
 
       const filtered = PRODUCTS.filter(p => {
+        if (!p.name) return false;
         const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase());
         const matchCat = cat === 'Todos' || p.category === cat;
         const matchSubCat = (cat === 'Moda' && subCat !== 'Todos') ? p.subCategory === subCat : true;
@@ -928,7 +1170,7 @@
 
       useEffect(() => { setCurrentImgIndex(0); }, [id]);
 
-      if (!product) return (
+      if (!product || !product.name) return (
         <div className="container fade-in" style={{ textAlign: 'center', padding: '6rem 0' }}>
           <h2>Produto não encontrado</h2>
           <button className="btn-primary" onClick={() => navigate('shop')} style={{ marginTop: '1rem' }}>Voltar para a Loja</button>
@@ -977,13 +1219,7 @@
                 {galleryImages.map((mediaSrc, idx) => (
                   <div className="carousel-slide" key={idx}>
                     {isVideoUrl(mediaSrc) ? (
-                      <video 
-                        src={mediaSrc} 
-                        controls 
-                        playsInline 
-                        preload="metadata"
-                        className="carousel-video" 
-                      />
+                      <ModernVideoPlayer src={mediaSrc} />
                     ) : (
                       <img src={mediaSrc} alt={product.name} className="carousel-image" />
                     )}
@@ -1068,7 +1304,7 @@
           {CATEGORIES.filter(c => c !== 'Todos').map(cat => (
             <button 
               key={cat} 
-              onClick={() => { navigate('shop'); }}
+              onClick={() => { navigate('shop', null, cat); }}
               style={{ background: 'var(--surface)', border: '1px solid var(--border)', padding: '3rem 1rem', borderRadius: 'var(--radius)', textAlign: 'center', fontWeight: 700, fontSize: '1.125rem', transition: 'var(--transition)' }}
               onMouseOver={e => e.currentTarget.style.borderColor = 'var(--accent)'}
               onMouseOut={e => e.currentTarget.style.borderColor = 'var(--border)'}
@@ -1090,49 +1326,27 @@
       </div>
     );
 
-    // COMPONENTE DO ANÚNCIO (ATUALIZADO PARA GOOGLE ADSENSE)
-    const AdBanner = () => {
-      React.useEffect(() => {
-        try {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-          console.error("Erro no AdSense:", e);
-        }
-      }, []);
-
-      return (
-        <div className="ad-banner-container fade-in">
-          <div className="ad-banner-content" style={{ minHeight: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <ins className="adsbygoogle"
-                 style={{ display: 'block', width: '100%' }}
-                 data-ad-client="ca-pub-9811516009541726"
-                 data-ad-slot="COLE_O_NUMERO_DO_BLOCO_AQUI"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-          </div>
-          <span className="ad-label">Publicidade</span>
-        </div>
-      );
-    };
-
     const App = () => {
       const [view, setView] = useState(() => {
         const params = new URLSearchParams(window.location.search);
         const productId = params.get('p');
         const pageId = params.get('page');
+        const catId = params.get('cat');
         
-        if (productId) return { page: 'product', id: productId };
-        if (pageId) return { page: pageId, id: null };
-        return { page: 'home', id: null };
+        if (productId) return { page: 'product', id: productId, category: null };
+        if (pageId) return { page: pageId, id: null, category: catId };
+        return { page: 'home', id: null, category: null };
       });
 
-      const navigate = (page, id = null) => {
-        setView({ page, id });
+      const navigate = (page, id = null, initialCategory = null) => {
+        setView({ page, id, category: initialCategory });
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         let newUrl = window.location.pathname;
         if (id) {
           newUrl += `?p=${id}`;
+        } else if (initialCategory && initialCategory !== 'Todos') {
+          newUrl += `?page=${page}&cat=${encodeURIComponent(initialCategory)}`;
         } else if (page !== 'home') {
           newUrl += `?page=${page}`;
         }
@@ -1144,9 +1358,10 @@
           const params = new URLSearchParams(window.location.search);
           const productId = params.get('p');
           const pageId = params.get('page');
-          if (productId) setView({ page: 'product', id: productId });
-          else if (pageId) setView({ page: pageId, id: null });
-          else setView({ page: 'home', id: null });
+          const catId = params.get('cat');
+          if (productId) setView({ page: 'product', id: productId, category: null });
+          else if (pageId) setView({ page: pageId, id: null, category: catId });
+          else setView({ page: 'home', id: null, category: null });
         };
         window.addEventListener('popstate', handlePopState);
         return () => window.removeEventListener('popstate', handlePopState);
@@ -1155,7 +1370,7 @@
       const renderView = () => {
         switch (view.page) {
           case 'home': return <Home navigate={navigate} />;
-          case 'shop': return <Shop navigate={navigate} />;
+          case 'shop': return <Shop navigate={navigate} initialCategory={view.category || 'Todos'} />;
           case 'product': return <ProductDetail id={view.id} navigate={navigate} />;
           case 'categories': return <Categories navigate={navigate} />;
           case 'about': return <StaticPage title="Sobre Nós" content="Nós descobrimos produtos úteis, interessantes e em alta na internet." />;
@@ -1185,9 +1400,6 @@
           <main style={{ flex: 1 }}>
             {renderView()}
           </main>
-
-          {/* O ANÚNCIO É EXIBIDO AQUI */}
-          <AdBanner />
 
           <footer className="footer">
             <div className="container">
