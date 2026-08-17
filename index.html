@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Essa tag abaixo resolve o problema do TikTok bloquear o vídeo -->
+  <meta name="referrer" content="no-referrer">
   <title>ianimandoShop | Facilitando o Dia a Dia</title>
+
+  <!-- SCRIPT DO GOOGLE ADSENSE -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9811516009541726" crossorigin="anonymous"></script>
   
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -199,14 +204,20 @@
       height: 100%;
       flex-shrink: 0;
     }
-    .carousel-image, .carousel-video {
+
+    .carousel-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
       user-select: none;
+      -webkit-user-drag: none;
     }
     .carousel-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       background: #000;
+      pointer-events: auto;
     }
 
     .carousel-arrow {
@@ -269,6 +280,38 @@
     .static-page h1 { font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem; }
     .static-page p { color: var(--muted); margin-bottom: 1rem; line-height: 1.7; }
 
+    /* ESTILOS DO ANÚNCIO */
+    .ad-banner-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.25rem;
+      text-align: center;
+    }
+    .ad-banner-content {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      min-height: 100px; /* Garante que há espaço enquanto o anúncio carrega */
+    }
+    .ad-banner-content:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .ad-label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
     .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 4rem 0 2rem; margin-top: 4rem; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; margin-bottom: 3rem; }
     .footer-title { font-weight: 700; margin-bottom: 1.25rem; font-size: 1rem; }
@@ -291,15 +334,13 @@
       .segment-btn { flex: 1; text-align: center; padding: 0.5rem; }
       .carousel-arrow { display: none; }
       
-      /* Início das alterações solicitadas (2 colunas no celular) */
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
       .product-info { padding: 0.5rem; }
       .product-name { font-size: 0.85rem; margin-bottom: 0.5rem; }
       .price { font-size: 1rem; }
       .old-price { font-size: 0.75rem; margin-left: 4px; }
       .view-deal-text { display: none; }
-      /* Fim das alterações solicitadas */
-
+      
       .bottom-nav {
         display: flex;
         position: fixed;
@@ -501,7 +542,7 @@
         platform: "tiktok",
         affiliateUrl: "https://vt.tiktok.com/ZS9k56MuunfLA-9mfhS/"
       },
- {
+      {
         id: "5",
         name: "Body Splash BARBARIUS 200ml by Primacial - Fragrância Aromática com Notas de Bergamota e Sálvia",
         category: "Beleza",
@@ -570,7 +611,7 @@
         platform: "tiktok",
         affiliateUrl: " https://vt.tiktok.com/ZS9k5optQ5u6x-cseYm/"
       },
-     {
+      {
         id: "8",
         name: "Tênis masculino academia Esportivo Impax Maverik Estiloso esportivo lançamento",
         category: "Moda",
@@ -715,7 +756,7 @@
     appPromotion: true,
     platform: "tiktok",
     affiliateUrl: "https://vt.tiktok.com/ZS9ka1PrNnNCq-8FSCe/"
-},
+}
       
     ];
 
@@ -943,6 +984,7 @@
                         src={mediaSrc} 
                         controls 
                         playsInline 
+                        preload="metadata"
                         className="carousel-video" 
                       />
                     ) : (
@@ -1051,6 +1093,31 @@
       </div>
     );
 
+    // COMPONENTE DO ANÚNCIO (ATUALIZADO PARA GOOGLE ADSENSE)
+    const AdBanner = () => {
+      React.useEffect(() => {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+          console.error("Erro no AdSense:", e);
+        }
+      }, []);
+
+      return (
+        <div className="ad-banner-container fade-in">
+          <div className="ad-banner-content" style={{ minHeight: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <ins className="adsbygoogle"
+                 style={{ display: 'block', width: '100%' }}
+                 data-ad-client="ca-pub-9811516009541726"
+                 data-ad-slot="COLE_O_NUMERO_DO_BLOCO_AQUI"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+          </div>
+          <span className="ad-label">Publicidade</span>
+        </div>
+      );
+    };
+
     const App = () => {
       const [view, setView] = useState(() => {
         const params = new URLSearchParams(window.location.search);
@@ -1121,6 +1188,9 @@
           <main style={{ flex: 1 }}>
             {renderView()}
           </main>
+
+          {/* O ANÚNCIO É EXIBIDO AQUI */}
+          <AdBanner />
 
           <footer className="footer">
             <div className="container">
